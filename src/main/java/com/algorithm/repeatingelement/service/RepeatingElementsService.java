@@ -57,14 +57,13 @@ public class RepeatingElementsService {
      */
     public List<Integer> getRepeatingElementsByHashTable(int[] inputArray) {
         Map<Integer, Integer> inputWithCount = new Hashtable();
-        for (int i : inputArray) {
-            Integer count = inputWithCount.get(i);
-            if (count == null) {
-                inputWithCount.put(i, 1);
-            } else {
-                inputWithCount.put(i, ++count);
-            }
-        }
+        Arrays.stream(inputArray)
+                .forEach(i ->
+                        {
+                            Integer count = inputWithCount.get(i);
+                            inputWithCount.put(i, count == null ? 1 : ++count);
+                        }
+                );
         return inputWithCount.entrySet().stream().filter(entry -> entry.getValue() > 1)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
