@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class RepeatingElementsService {
@@ -18,15 +19,12 @@ public class RepeatingElementsService {
      * @return
      */
     public List<Integer> getRepeatingElementsByTwoLoop(int[] inputArray) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < inputArray.length; i++) {
-            for (int j = i + 1; j < inputArray.length; j++) {
-                if (inputArray[i] == inputArray[j]) {
-                    result.add(inputArray[i]);
-                }
-            }
-        }
-        return result;
+        return IntStream.range(0, inputArray.length)
+                .flatMap(i -> IntStream.range(i + 1, inputArray.length)
+                        .filter(j -> inputArray[i] == inputArray[j])
+                        .map(j -> inputArray[j]))
+                .boxed()
+                .collect(Collectors.toList());
     }
 
     /**
